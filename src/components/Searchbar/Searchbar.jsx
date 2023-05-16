@@ -1,32 +1,30 @@
-import { Component } from "react"
+import { useState } from "react"
 import PropTypes from 'prop-types'
 import { toast } from "react-toastify"
 import { HeaderForm, SearchButton, StyledForm,SearchInput } from 'components/Searchbar/Searchbar.styled'
 import {BiSearchAlt} from "react-icons/bi";
 
-export default class Searchbar extends Component {
-    state = {
-       imagesName : ''
-    }
+export const Searchbar = ({formSubmit}) => {
 
-    handleImagesName = (e) => {
-      this.setState({imagesName: e.currentTarget.value.toLowerCase()})
+  const [imagesName, setImagesName] = useState('');
+
+
+   const handleImagesName = (e) => {
+      setImagesName(e.currentTarget.value.toLowerCase())
     }
-    heandleSudmit =(e) => {
+   const heandleSudmit =(e) => {
       e.preventDefault()
-      if(this.state.imagesName.trim() === '') {
+      if(imagesName.trim() === '') {
         toast.warn("Please, Enter you search");
         return
       }
-      this.props.formSubmit(this.state.imagesName)
-      this.setState({imagesName: ''})
+     formSubmit(imagesName)
+     setImagesName('')
     }
 
-
-    render() {
         return (
             <HeaderForm>
-             <StyledForm onSubmit={this.heandleSudmit}>
+             <StyledForm onSubmit={heandleSudmit}>
              <SearchButton type="submit">
               <BiSearchAlt size={'100%'} color={'#0e7545'}/>
              </SearchButton>
@@ -34,16 +32,16 @@ export default class Searchbar extends Component {
     <SearchInput
       type="text"
       autoComplete="off"
-      value={this.state.imagesName}
+      value={imagesName}
       autoFocus
       placeholder="Search images or photos"
-      onChange={this.handleImagesName}
+      onChange={handleImagesName}
     />
   </StyledForm>
 </HeaderForm>
         )
     }
-}
+
 Searchbar.propTypes = {
   formSubmit: PropTypes.func.isRequired
 }
